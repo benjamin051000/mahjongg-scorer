@@ -6,18 +6,10 @@ Photo of your rack -> list of tiles -> your house scoring. Everything runs local
 - A small **YOLO classifier** that you train on your own set names each tile.
 - You confirm or fix every hand, and each confirmed hand becomes more training data.
 
-## Setup (once)
-
-```sh
-uv venv -p 3.12 .venv
-uv pip install --python .venv torch torchvision --index-url https://download.pytorch.org/whl/cpu   # drop --index-url on an NVIDIA machine
-uv pip install --python .venv ultralytics
-```
-
 ## Use
 
 ```sh
-.venv/bin/python read_hand.py photo.jpg
+uv run read_hand.py photo.jpg
 ```
 
 It shows `1:flower3  2:4dot? ...`. A `?` means the model isn't sure. Fix mistakes with:
@@ -40,7 +32,7 @@ Tile names: `1dot`..`9dot`, `1bam`..`9bam`, `1crack`..`9crack`, `east south west
 ### `--use_claude`: no local model needed yet
 
 ```sh
-.venv/bin/python read_hand.py photo.jpg --use_claude
+uv run read_hand.py photo.jpg --use_claude
 ```
 
 This names the tiles with headless Claude Code (`claude -p`) instead of the local model. It needs the
@@ -55,9 +47,9 @@ way to build the training set. Train once you have ~10 pictures per tile, then d
 Before there's a model, every tile shows `?` and you type all of them in.
 
 1. **Quick start:** lay out one of every tile on the racks, take ~5 photos (different light and angles), and run
-   `.venv/bin/python collect.py photos/*.jpg`. Drag each picture from `dataset/unlabeled/` into its
+   `uv run collect.py photos/*.jpg`. Drag each picture from `dataset/unlabeled/` into its
    `dataset/labeled/<tile>/` folder; anything that isn't a tile face goes in `junk/`.
-2. `.venv/bin/python train.py`: a few minutes on CPU. Writes `tile_cls.pt`.
+2. `uv run train.py`: a few minutes on CPU. Writes `tile_cls.pt`.
 3. From then on `read_hand.py` pre-fills the names. Retrain every so often as hands pile up.
    `collect.py` will now pre-sort new photos into `dataset/predicted/<tile>/`. Move the wrong ones, then
    `rsync -a --remove-source-files dataset/predicted/ dataset/labeled/`.
