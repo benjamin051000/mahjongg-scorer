@@ -1,10 +1,10 @@
-# Mahjong hand reader
+# Mahjongg Hand Scorer
 
-Photo of your rack -> list of tiles -> your house scoring. Everything runs locally and free, on CPU.
+Photo of your hand -> list of tiles -> your house scoring.
 
-- **FastSAM** finds the tiles (no training needed).
+- **FastSAM** finds the tiles.
 - A small **YOLO classifier** that you train on your own set names each tile.
-- You confirm or fix every hand, and each confirmed hand becomes more training data.
+- Each verified hand becomes more training data.
 
 ## Use
 
@@ -35,9 +35,9 @@ Tile names: `1dot`..`9dot`, `1bam`..`9bam`, `1crack`..`9crack`, `east south west
 uv run read_hand.py photo.jpg --use_claude
 ```
 
-This names the tiles with headless Claude Code (`claude -p`) instead of the local model. It needs the
-`claude` CLI installed and logged in, and it counts against that Claude plan's usage limits, not API
-billing. It takes about 20 s per photo. The session can only read the one tile image, in a temp folder.
+This names the tiles with headless Claude Code instead of the local model. It needs the
+`claude` CLI installed and logged in.
+The session can only read the one tile image, in a temp folder.
 
 Confirmed hands still land in `dataset/labeled/`, so scoring hands with `--use_claude` is the easiest
 way to build the training set. Train once you have ~10 pictures per tile, then drop the flag.
