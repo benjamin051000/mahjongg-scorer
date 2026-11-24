@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pt
+runs/
+dataset/_split/
+dataset/unlabeled/
+dataset/predicted/
